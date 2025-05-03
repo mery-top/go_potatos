@@ -1,0 +1,18 @@
+<h2>Your Blog Posts</h2>
+{{ if .posts }}
+    <ul>
+    {{ range .posts }}
+        <li>
+            <h3>{{ .Title }}</h3>
+            <p>{{ .Content }}</p>
+            {{ if .ImagePath }}
+                <img src="{{ .ImagePath }}" width="200px">
+            {{ end }}
+            <p><em>Posted on {{ .CreatedAt }}</em></p>
+        </li>
+    {{ end }}
+    </ul>
+{{ else }}
+    <p>You haven't written any posts yet.</p>
+{{ end }}
+
