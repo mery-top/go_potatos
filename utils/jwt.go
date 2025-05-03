@@ -25,3 +25,20 @@ func GenerateJWT(email string) (string, error){
 	token:= jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	return token.SignedString(jwtkey)
 }
+
+
+func ValidateJWT(tokenstr string) (*Claims, error){
+	claims:= &Claims{}
+	token,err:= jwt.ParseWithClaims(
+		tokenstr, claims, func(token *jwt.Token) (interface{}, error)
+		{
+			return jwtkey, nil
+		})
+
+	if err!=nil || !token.Valid{
+		return nil, error
+	}
+
+	return claims, nil
+
+}
