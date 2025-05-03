@@ -85,8 +85,7 @@ func CreatePostPage(w http.ResponseWriter, r *http.Request){
 	http.Redirect(w,r , "/dashboard", http.StatusSeeOther)
 }
 
-
-
+//DASHNOARD HANDLER
 func DashboardHandler(w http.ResponseWriter, r *http.Request){
 	//validate Cookies
 	cookie, err:= r.Cookie("token")
