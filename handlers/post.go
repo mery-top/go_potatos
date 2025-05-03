@@ -48,12 +48,16 @@ func CreatePostPage(w http.ResponseWriter, r *http.Request){
 		http.Redirect(w,r, "/login", http.StatusInternalServerError)
 		return
 	}
-
+	
+	//Validate JWT
 	claims, err:= utils.ValidateJWT(cookie.Value)
 	if err!=nil{
 		http.Redirect(w,r, "/login", http.StatusInternalServerError)
 		return
 	}
+	
+
+	//Validate User
 
 	user, err:= models.GetUserByEmail(claims.Email)
 	if err!=nil{
