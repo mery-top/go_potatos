@@ -4,10 +4,13 @@ import(
 	"go_potatos/models"
 	"go_potatos/utils"
 	"html/template"
+	"go_potatos/database"
 	"os"
 	"path/filepath"
 	"strconv"
 	)
+
+
 
 func CreatePostPage(w http.ResponseWriter, r *http.Request){
 	if r.Method == http.MethodGet{
@@ -80,4 +83,42 @@ func CreatePostPage(w http.ResponseWriter, r *http.Request){
 	}
 
 	http.Redirect(w,r , "/dashboard", http.StatusSeeOther)
+}
+
+
+
+func DashboardHandler(w http.ResponseWriter, r *http.Request){
+	//validate Cookies
+	cookie, err:= r.Cookie("token")
+	if err!=nil{
+		http.Redirect(w,r, "/login", http.StatusInternalServerError)
+		return
+	}
+
+	//ValidateJWT
+
+	claims, err:= utils.ValidateJWT(cookie.Value)
+	if err!=nil{
+		http.Redirect(w,r, "/login", http.StatusSeeOther)
+		return
+	}
+
+	//Validate User
+
+	user, err:= models.GetUserByEmail(claims.Email)
+	if err!=nil{
+		http.Redirect(w,r, "/login", http.StatusInternalServerError)
+		return
+	}
+
+
+	post, err:= models.GetPostByUserUD(database.db, user.ID)
+
+	t:= template.Must(template.ParseFiles("templates/dashboard.html"))
+
+	t.Execute(w, struct{
+		Posts []models.Post
+	}{Posts: posts})
+
+
 }
