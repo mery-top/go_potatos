@@ -10,7 +10,7 @@ var db *sql.database
 
 func InitDB(){
 	//Write the connstr
-	connStr:=""
+	connStr := "host=localhost port=5433 user=postgres password=postgres dbname=postgres sslmode=disable"
 	var err error
 	db,err:= sql.Open("postgres", connStr)
 	if err!=nil{
