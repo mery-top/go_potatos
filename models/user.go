@@ -2,7 +2,7 @@ package models
 import(
 	"go_potatos/database"
 	"database/sql"
-	"error"
+	"errors"
 )
 
 type User struct{
